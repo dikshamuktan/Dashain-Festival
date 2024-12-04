@@ -4,8 +4,9 @@ import PhotoList from "../components/photoList";
 
 function Photo() {
   const [upload, setUpload] = useState(false);
-
+  // const [showMyPhotos, setShowMyPhotos] = useState(false);
   const [imgPreviewUrl, setImgPreviewUrl] = useState(null);
+  const [activeTab, setActiveTab] = useState("SHARED_PHOTO");
 
   const handleUpload = () => {
     setUpload(!upload);
@@ -26,10 +27,15 @@ function Photo() {
     console.log(upload);
   };
 
+  // const personalPics = () => {
+  //   setShowMyPhotos(!showMyPhotos);
+  // };
+
   // useEffect(() => {
   //   setPhotos(photoList);
   // }, []);
   // console.log(photos);
+  // console.log(activeTab);
   return (
     <div className=" bg-slate-50">
       <div className="flex flex-col my-7 mx-11 p-4 ">
@@ -47,11 +53,21 @@ function Photo() {
           </button>
         </div>
         <div className="flex mt-6 gap-3">
-          <button className="flex rounded font-bold bg-lime-600 p-2 gap-2 text-white hover:bg-lime-700 focus:outline focus:ring-white-400">
+          <button
+            className={`flex rounded font-bold 
+            ${activeTab === "SHARED_PHOTO" ? "bg-lime-600 text-white " : ""}
+             p-2 gap-2  hover:bg-lime-700 focus:outline focus:ring-white-400`}
+            onClick={() => setActiveTab("SHARED_PHOTO")}
+          >
             <Users size={20} />
             <p className="text-lg">Family Photos</p>
           </button>
-          <button className="flex border border-dashed justify-center p-2 gap-1 font-bold text-lg  rounded hover:bg-gray-200">
+          <button
+            onClick={() => setActiveTab("PERSONNEL_PHOTO")}
+            className={`flex border justify-center
+            ${activeTab === "PERSONNEL_PHOTO" ? "bg-lime-600 text-white " : ""}
+            p-2 gap-1 font-bold text-lg  rounded  hover:bg-lime-700`}
+          >
             <User />
             <p>My Photos</p>
           </button>
@@ -127,7 +143,7 @@ function Photo() {
         </form>
       )}
 
-      <PhotoList />
+      <PhotoList photoType={activeTab} />
     </div>
   );
 }

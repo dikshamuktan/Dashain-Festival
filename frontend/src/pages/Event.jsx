@@ -1,6 +1,7 @@
 // import axios from "axios";
-import { Calendar, Plus } from "lucide-react";
+import { Calendar, Plus, CircleUser, MessageSquare } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Events() {
   const [showForm, setShowForm] = useState(false);
@@ -53,16 +54,29 @@ export default function Events() {
             <button className="font-medium  ">Create Event</button>
           </div>
         </div>
-        <div className="grid grid-cols-2 h-3/4 gap-5 ms-11 me-11  ">
+        <div className="grid grid-cols-3  ms-11 ">
           {task.map((event) => (
-            <div className="rounded-lg shadow-lg gap-8 p-5 mb-4 ">
+            <div className="rounded-lg shadow-lg gap-4 p-5 mb-4 ml-8 w-4/5 overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
               <div className="flex justify-between">
                 <h1 className="text-lime-500 font-bold text-xl">
                   {event.title}
                 </h1>
                 <p className="p-1 rounded-lg bg-gray-100">{event.date}</p>
               </div>
-              <p className="">Description:{event.description}</p>
+              <p className="">{event.description}</p>
+              <div className="flex gap-2 mt-4 opacity-60">
+                <CircleUser />
+                <p className="">Created by Diksha</p>
+              </div>
+              <hr className="border-t border-gray-300 my-4" />
+              <div className="flex justify-between">
+                <div className="flex gap-3 opacity-60">
+                  <CircleUser /> <p>particiants</p>
+                </div>
+                <Link to="/events/skdgksdks" className="mr-4">
+                  <MessageSquare />
+                </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -109,6 +123,7 @@ export default function Events() {
                 value={event.description}
               ></textarea>
             </div>
+
             <div className="flex justify-end gap-3">
               <button onClick={handleForm} type="button">
                 Close

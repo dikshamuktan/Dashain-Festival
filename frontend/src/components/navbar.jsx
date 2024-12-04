@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   User,
   Bell,
@@ -8,13 +9,13 @@ import {
   Users,
   BookImage,
   LayoutDashboard,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 // import { AuthParam } from "../contexts/usercontext";
 
 function Navbar() {
   const navigate = useNavigate();
-  // const { user } = useContext({ AuthParam });
   const [isOpen, setIsOpen] = useState(false);
   const [users, setUser] = useState([
     {
@@ -50,6 +51,7 @@ function Navbar() {
             </span>
           </Link>
         </ul>
+
         <ul className="flex gap-20">
           <li>
             <Link to="events" className="flex gap-1 justify-center ">
@@ -75,16 +77,20 @@ function Navbar() {
         </ul> */}
         <div className="justify-center mt-2">
           <ul className="flex gap-5 align-middle justify-center">
-            <li>
+            <li className="relative">
               <Bell />
+              <p className="absolute right-[-5px] left-4 bottom-[-2px] top-2 w-4 justify-center text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+                10
+              </p>
             </li>
+
             <div className="relative">
               <button onClick={toggleMenu} className="dropdown-button rounded ">
                 <ul className="flex gap-2 text-md">
                   <li>{<CircleUser className="" />}</li>
                   <li>
                     {users.map((users) => (
-                      <div>{users.name}</div>
+                      <div className="hover:text-lime-300">{users.name}</div>
                     ))}
                   </li>
                 </ul>

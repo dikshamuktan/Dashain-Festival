@@ -7,6 +7,7 @@ import Photo from "./pages/Photo";
 import Family from "./pages/family";
 import LoginForm from "./pages/login";
 import RegisterPage from "./pages/registration";
+import EventList from "./components/eventlist";
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
         <Routes>
           <Route path="/home" element={<HomePage />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/:eventId" element={<EventList />} />
           <Route path="/photo" element={<Photo />} />
           <Route path="/Family" element={<Family />} />
           <Route path="/" element={<LoginForm />} />

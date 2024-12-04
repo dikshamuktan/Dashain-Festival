@@ -116,21 +116,23 @@ function Family() {
           </div>
         ))}
       </div>
+      <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+        {family.map((family) => (
+          <div className="flex justify-center shadow-lg py-11 px-7 mt-8 gap-8">
+            <div className="flex gap-3 ">
+              <CircleUserRound size={28} className="text-lime-600 " />
 
-      {family.map((family) => (
-        <div className="shadow-lg w-2/6 py-11 px-7 mt-8">
-          <div>
-            <CircleUserRound />
-            <div>
-              <h1>{family.name}</h1>
-              <p>{family.email}</p>
+              <div>
+                <h1 className="font-bold">{family.name}</h1>
+                <p className="opacity-50 ">{family.email}</p>
+              </div>
             </div>
-            <div>
-              <UserRoundMinus />
+            <div className="text-red-600">
+              <UserRoundMinus size={20} />
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

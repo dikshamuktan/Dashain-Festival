@@ -1,0 +1,82 @@
+import {
+  Heart,
+  Trash2,
+  Share2,
+  Maximize2,
+  SquareUserRound,
+} from "lucide-react";
+import { useState } from "react";
+const PhotoCard = ({ photo }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // const toggleLike = () => {
+  //   setLiked(!liked);
+  // };
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative  inline-block overflow-hidden rounded-lg px-1  hover:scale-110  group-hover:opacity-50 transition-transform duration-200"
+    >
+      <button className="btn-primary absolute mt-0 p-2">
+        <Heart
+          className="text-red-600 fill-primary text-primary"
+          // className={`
+          //   ${liked ? "" : "text-red-600"}
+          //   `}
+        />
+      </button>
+      {isHovered && (
+        <button className=" z-30 bg-red-500 absolute right-3 mt-2 text-white p-2 rounded-full">
+          <Trash2 size={20} />
+        </button>
+      )}
+      <img
+        className="aspect-[4/3] rounded"
+        src={photo.imageUrl}
+        alt="Uploaded"
+        style={{
+          height: "280px",
+          width: "100%",
+        }}
+      />
+
+      {/* floating infocard */}
+      {isHovered && (
+        <div className="absolute transform -translate-x-1 -translate-y-1 bottom-0 right-0 left-1 p-2 ">
+          <div className=" bg-white  backdrop-blur-sm rounded-lg p-3 shadow-lg ">
+            <div className="flex justify-between">
+              <div className="flex  gap-2 ms-2">
+                <SquareUserRound className="mt-1" />
+                <div className="">
+                  <h2 className="font-bold">{photo.userId.name}</h2>
+                  <p className="opacity-50 text-xs">
+                    {new Date(photo.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2 mr-2 ">
+                <button>
+                  <Heart size={20} />
+                </button>
+                <button>
+                  {" "}
+                  <Share2 size={20} />
+                </button>
+                <button>
+                  <Maximize2 size={20} />
+                </button>
+              </div>
+            </div>
+            <div>
+              <p className="ms-3 text-lime-600 text-md">{photo.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+    </div>
+  );
+};
+
+export default PhotoCard;

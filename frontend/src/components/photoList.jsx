@@ -1,7 +1,27 @@
 import PhotoCard from "./photocard";
 import { useState } from "react";
-function PhotoList() {
-  const photoList = [
+
+/*
+
+photo[]={
+  name. 
+  likes:[useId]
+
+
+}
+photoList.map((obj)=>{
+  if(obj.likes.includes(userId)){
+    return {...obj,isLiked:true}
+  }else{
+    return{ ...obj, isLiked:false}
+  }
+})
+
+// currentLy logedin userId 
+*/
+
+function PhotoList({ photoType }) {
+  const shared = [
     {
       _id: "673f0691bff38085a11be486",
       userId: {
@@ -201,10 +221,54 @@ function PhotoList() {
       __v: 8,
     },
   ];
-  const [photos, setPhotos] = useState(photoList);
+  const personnel = [
+    {
+      _id: "673f04cdbff38085a11be312",
+      userId: {
+        _id: "6736d2d6bff38085a11bd406",
+        name: "sujit",
+        email: "sujit@gmail.com",
+        profilePicture: "",
+      },
+      imageUrl:
+        "https://res.cloudinary.com/dvpzrmtyc/image/upload/v1732183245/uploads/auleklcawp9m6tjqlaxn.jpg",
+      description: "swivt background",
+      likes: [
+        {
+          _id: "673615770808c9ab5e5a42d7",
+          name: "Chhetri",
+          profilePicture:
+            "https://res.cloudinary.com/dvpzrmtyc/image/upload/v1732183609/profile_pictures/gbhtf2ap5yahnurj6x80.jpg",
+        },
+      ],
+      createdAt: "2024-11-21T10:00:45.648Z",
+      __v: 1,
+    },
+    {
+      _id: "673f0498bff38085a11be2fd",
+      userId: {
+        _id: "673615770808c9ab5e5a42d7",
+        name: "Chhetri",
+        email: "chhetri@gmail.com",
+        profilePicture:
+          "https://res.cloudinary.com/dvpzrmtyc/image/upload/v1732183609/profile_pictures/gbhtf2ap5yahnurj6x80.jpg",
+      },
+      imageUrl:
+        "https://res.cloudinary.com/dvpzrmtyc/image/upload/v1732183192/uploads/vnpw4srhxiwt6fug01c4.png",
+      description: "output of my AI Model",
+      likes: [],
+      createdAt: "2024-11-21T09:59:52.506Z",
+      __v: 0,
+    },
+  ];
+
+  let photos = photoType === "SHARED_PHOTO" ? shared : personnel;
+
+  // const [liked, setLiked] = useState();
+
   return (
     <div>
-      <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-11 gap-y-6 mt-8 ">
+      <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 gap-y-6 mt-8 ml-11 mr-11">
         {photos.map((photos, index) => (
           <PhotoCard photo={photos} key={photos._id} />
         ))}
