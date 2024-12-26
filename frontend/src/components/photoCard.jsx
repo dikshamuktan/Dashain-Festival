@@ -7,14 +7,30 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { usePhotos } from "../contexts/photoContext";
+import { useAuth } from "../contexts/authContext";
 
 const PhotoCard = ({ photo }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [likes, setLikes] = useState(0);
+  const { toggleLike, deletePhoto } = usePhotos();
+  const { user } = useAuth();
 
-  const handleLike = () => {
-    setLikes(likes + 1);
-    if (likes > 0) setLikes(likes - 1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [likeCount, setLikeCount] = useState(photo.likes.length);
+  const [likes, setLikes] = useState(
+    photo.likes.some((like) => like._id === user?._id)
+  );
+
+  const handleLike = (e) => {
+    e.stopPropagation();
+    const success = toggleLike(photo._id);
+    if (success) {
+      setLikes(!likes);
+      setLikeCount(likes ? likeCount - 1 : likeCount + 1);
+    }
+  };
+  const handleDeletePhoto = (e) => {
+    e.stopPropagation();
+    deletePhoto(photo._id);
   };
 
   const handlePic = () => {
@@ -22,18 +38,21 @@ const PhotoCard = ({ photo }) => {
   };
   return (
     <>
-      <div className="relative group inline-block overflow-hidden rounded-lg px-1  transition-transform duration-300 hover:scale-110">
+      <div className="relative group inline-block overflow-hidden rounded-xl px-1  transition-transform duration-300 hover:scale-110">
         <button
           onClick={handleLike}
-          className=" absolute  p-1 gap-1 ml-2 mt-2 flex justify-center items-center bg-black opacity-70 rounded-lg "
+          className=" absolute  p-1 gap-1 ml-2 mt-2 flex justify-center items-center bg-gray-700 opacity-70 rounded-lg "
         >
           <Heart
-            size={20}
+            size={18}
             className={` ${likes ? "fill-red-600 text-red-600" : "text-white"}`}
           />
-          <h1 className="text-xl font-md text-white"> {likes}</h1>
+          <h1 className=" text-white"> {likeCount}</h1>
         </button>
-        <button className="absolute  bg-red-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100 right-5 mt-2 text-white p-2 rounded-full">
+        <button
+          onClick={handleDeletePhoto}
+          className="absolute  bg-red-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100 right-5 mt-2 text-white p-2 rounded-full"
+        >
           <Trash2 size={20} />
         </button>
 
@@ -50,7 +69,7 @@ const PhotoCard = ({ photo }) => {
         {/* floating infocard */}
 
         <div className="absolute translate-y-28 mb-3 transition-trasform duration-200 group-hover:translate-y-4 bottom-1 p-2 right-0 w-full">
-          <div className=" bg-white rounded-lg p-3 shadow-lg ">
+          <div className=" bg-white rounded-lg p-3 mr-3 ml-3 shadow-lg ">
             <div className="flex justify-between">
               <div className="flex  gap-2 ms-2">
                 <SquareUserRound className="mt-1" />
@@ -88,10 +107,10 @@ const PhotoCard = ({ photo }) => {
       </div>
       {isOpen && (
         <div className="z-20 h-screen inset-0 fixed justify-center items-center  flex flex-col bg-gray-400 bg-opacity-90 ">
-          <button>
+          <button className="flex">
             <X
               size={40}
-              className="absolute mt-5 ml-7  text-white w-4/6"
+              className="absolute bg-gray-500 rounded-lg mt-3 p-1 right-20 md:right-32 text-white"
               onClick={handlePic}
             />
           </button>

@@ -1,33 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import { useAuth } from "../contexts/authContext";
 
 function RegisterPage() {
-  const navigate = useNavigate();
+  const { register } = useAuth();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
-    phoneNo: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    console.log(handleChange);
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const getReq = () => {
-    console.log(user);
-    localStorage.setItem("userData", JSON.stringify(user));
-    console.log("User data saved to localStorage");
-    navigate("/");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    register(user);
   };
 
   return (
     <div className="flex justify-center p-5">
       <form
-        onSubmit={getReq}
+        onSubmit={handleSubmit}
         className="w-2/6 mt-11 rounded-lg shadow-lg items-center"
       >
         <h2 className="mb-4 p-4 w-full text-lime-600 text-2xl font-bold text-center ">
@@ -49,14 +46,14 @@ function RegisterPage() {
           value={user.email}
           onChange={handleChange}
         />
-        <input
+        {/* <input
           className=" w-full p-3 mb-4 rounded outline outline-lime-300 focus:border-lime-400"
           type="text"
           name="phoneNo"
           placeholder="Phone Number"
           value={user.phoneNo}
           onChange={handleChange}
-        />
+        /> */}
         <input
           className=" w-full p-3 mb-4 rounded outline outline-lime-300 focus:border-lime-400"
           type="text"
@@ -65,7 +62,10 @@ function RegisterPage() {
           value={user.password}
           onChange={handleChange}
         />
-        <button className="flex w-full text-white justify-center font-medium rounded bg-lime-500 p-3 justify-self-center ">
+        <button
+          type="submit"
+          className="flex w-full text-white justify-center font-medium rounded bg-lime-500 p-3 justify-self-center "
+        >
           Conform
         </button>
       </form>

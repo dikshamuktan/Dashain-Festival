@@ -1,12 +1,17 @@
 import { BookImage, Upload, Users, User, Image, Share, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhotoList from "../components/photoList";
+import { usePhotos } from "../contexts/photoContext";
+import toast from "react-hot-toast";
 
 function Photo() {
+  const { uploadPhotos } = usePhotos();
+
   const [upload, setUpload] = useState(false);
-  // const [showMyPhotos, setShowMyPhotos] = useState(false);
   const [imgPreviewUrl, setImgPreviewUrl] = useState(null);
   const [activeTab, setActiveTab] = useState("SHARED_PHOTO");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [description, setDescription] = useState("");
 
   const handleUpload = () => {
     setUpload(!upload);
@@ -14,30 +19,40 @@ function Photo() {
   const handleFileChange = (events) => {
     const file = events.target.files[0];
     if (file) {
+      setSelectedFile(file);
       const filePath = URL.createObjectURL(file);
       setImgPreviewUrl(filePath);
     }
   };
 
   const handleRemovePreview = () => {
+    setSelectedFile(null);
     setImgPreviewUrl(null);
   };
+
   const handlePhotoUpload = async (e) => {
     e.preventDefault();
-    console.log(upload);
+    if (!selectedFile) {
+      toast.error("select a file first");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", selectedFile);
+    formData.append("description", description);
+
+    const success = await uploadPhotos(formData);
+
+    if (success) {
+      setSelectedFile(null);
+      setDescription("");
+      setImgPreviewUrl(null);
+      setUpload(false);
+    }
   };
 
-  // const personalPics = () => {
-  //   setShowMyPhotos(!showMyPhotos);
-  // };
-
-  // useEffect(() => {
-  //   setPhotos(photoList);
-  // }, []);
-  // console.log(photos);
-  // console.log(activeTab);
   return (
-    <div className=" bg-slate-50">
+    <div className=" ">
       <div className="flex flex-col my-7 mx-11 p-4 ">
         <div className="flex justify-between">
           <h1 className="flex gap-3 justify-center items-center">
@@ -77,7 +92,7 @@ function Photo() {
       {upload && (
         <form
           onSubmit={handlePhotoUpload}
-          className="flex flex-col justify-center  bg-white gap-8 rounded-lg shadow-md p-4 ms-20 mr-20"
+          className="flex flex-col justify-center  bg-slate-50 gap-8 rounded-lg shadow-md p-4 ms-20 mr-20"
         >
           <div className="w-full">
             <div className="flex flex-col  border-2 size-40 rounded mt-6 mx-auto justify-center items-center">
@@ -120,6 +135,8 @@ function Photo() {
           <div className="flex flex-col gap-2 ms-9 mr-11">
             <h3 className="text-md font-bold">Description</h3>
             <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="border-solid border p-4 border-1 "
               placeholder="Write a description..."
             ></textarea>
